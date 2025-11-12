@@ -1,0 +1,38 @@
+{{- $root := . -}}
+{{- $namespace := include "microservices.namespace" . -}}
+{{- range $svc := .Values.services }}
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ $svc.name }}
+  namespace: {{ $namespace }}
+  labels:
+{{ include "microservices.labels" (dict "root" $root "service" $svc) | indent 4 }}
+spec:
+  replicas: {{ $svc.replicaCount | default 1 }}
+  selector:
+    matchLabels:
+{{ include "microservices.selectorLabels" (dict "service" $svc) | indent 6 }}
+  template:
+    metadata:
+      labels:
+{{ include "microservices.labels" (dict "root" $root "service" $svc) | indent 8 }}
+    spec:
+      containers:
+        - name: {{ $svc.name }}
+          image: {{ $svc.image }}
+          imagePullPolicy: {{ $svc.imagePullPolicy | default "IfNotPresent" }}
+          ports:
+            - name: http
+              containerPort: {{ $svc.containerPort }}
+          {{- with $svc.env }}
+          env:
+{{ toYaml . | indent 12 }}
+          {{- end }}
+          {{- with $svc.resources }}
+          resources:
+{{ toYaml . | indent 12 }}
+          {{- end }}
+{{- end }}
+

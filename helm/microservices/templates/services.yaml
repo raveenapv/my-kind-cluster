@@ -1,0 +1,21 @@
+{{- $root := . -}}
+{{- $namespace := include "microservices.namespace" . -}}
+{{- range $svc := .Values.services }}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ $svc.name }}
+  namespace: {{ $namespace }}
+  labels:
+{{ include "microservices.labels" (dict "root" $root "service" $svc) | indent 4 }}
+spec:
+  type: {{ $svc.serviceType | default "ClusterIP" }}
+  selector:
+{{ include "microservices.selectorLabels" (dict "service" $svc) | indent 4 }}
+  ports:
+    - name: http
+      port: {{ $svc.servicePort | default $svc.containerPort }}
+      targetPort: {{ $svc.targetPort | default $svc.containerPort }}
+{{- end }}
+

@@ -8,9 +8,11 @@ spec:
   source:
     repoURL: https://github.com/raveenapv/my-kind-cluster.git
     targetRevision: main
-    path: services
-    kustomize:
-      namespace: microservices  
+    path: helm/microservices
+    helm:
+      releaseName: microservices
+      values: |
+        namespace: microservices
   destination:
     server: https://kubernetes.default.svc
     namespace: microservices
