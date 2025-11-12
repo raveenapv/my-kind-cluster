@@ -8,7 +8,7 @@ spec:
   source:
     repoURL: https://github.com/raveenapv/my-kind-cluster.git
     targetRevision: main
-    path: k8s/services
+    path: services
     kustomize:
       namespace: microservices  
   destination:
