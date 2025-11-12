@@ -6,7 +6,7 @@ metadata:
 spec:
   project: default
   source:
-    repoURL: https://github.com/raveena/my-kind-cluster.git
+    repoURL: https://github.com/raveenapv/my-kind-cluster.git
     targetRevision: main
     path: k8s/services
     kustomize:
