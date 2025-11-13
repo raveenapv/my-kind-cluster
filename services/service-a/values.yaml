@@ -1,0 +1,17 @@
+services:
+  service-a:
+    image: registry.k8s.io/echoserver:1.10
+    replicaCount: 2
+    containerPort: 8080
+    servicePort: 80
+    env:
+      - name: SERVICE_NAME
+        value: service-a
+    resources:
+      requests:
+        cpu: 100m
+        memory: 128Mi
+      limits:
+        cpu: 250m
+        memory: 256Mi
+

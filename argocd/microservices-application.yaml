@@ -11,6 +11,9 @@ spec:
     path: helm/microservices
     helm:
       releaseName: microservices
+      valueFiles:
+        - services/service-a/values.yaml
+        - services/service-b/values.yaml
       values: |
         namespace: microservices
   destination:

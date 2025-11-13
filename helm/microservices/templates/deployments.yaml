@@ -1,26 +1,27 @@
 {{- $root := . -}}
 {{- $namespace := include "microservices.namespace" . -}}
-{{- range $svc := .Values.services }}
+{{- range $name, $svc := .Values.services }}
+{{- $serviceName := default $name $svc.name }}
 ---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ $svc.name }}
+  name: {{ $serviceName }}
   namespace: {{ $namespace }}
   labels:
-{{ include "microservices.labels" (dict "root" $root "service" $svc) | indent 4 }}
+{{ include "microservices.labels" (dict "root" $root "name" $serviceName) | indent 4 }}
 spec:
   replicas: {{ $svc.replicaCount | default 1 }}
   selector:
     matchLabels:
-{{ include "microservices.selectorLabels" (dict "service" $svc) | indent 6 }}
+{{ include "microservices.selectorLabels" (dict "name" $serviceName) | indent 6 }}
   template:
     metadata:
       labels:
-{{ include "microservices.labels" (dict "root" $root "service" $svc) | indent 8 }}
+{{ include "microservices.labels" (dict "root" $root "name" $serviceName) | indent 8 }}
     spec:
       containers:
-        - name: {{ $svc.name }}
+        - name: {{ $serviceName }}
           image: {{ $svc.image }}
           imagePullPolicy: {{ $svc.imagePullPolicy | default "IfNotPresent" }}
           ports:

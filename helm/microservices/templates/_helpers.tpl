@@ -7,11 +7,11 @@
 {{- end }}
 
 {{- define "microservices.selectorLabels" -}}
-app.kubernetes.io/name: {{ .service.name }}
+app.kubernetes.io/name: {{ .name }}
 {{- end }}
 
 {{- define "microservices.labels" -}}
-{{- include "microservices.selectorLabels" . | printf "%s\n" -}}
+{{- include "microservices.selectorLabels" (dict "name" .name) | printf "%s\n" -}}
 {{- $global := .root.Values.globalLabels | default dict -}}
 {{- range $key, $value := $global }}
 {{ printf "%s: %s\n" $key $value }}

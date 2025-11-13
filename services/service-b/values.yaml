@@ -1,0 +1,17 @@
+services:
+  service-b:
+    image: nginx:1.25.3
+    replicaCount: 2
+    containerPort: 80
+    servicePort: 80
+    env:
+      - name: SERVICE_NAME
+        value: service-b
+    resources:
+      requests:
+        cpu: 100m
+        memory: 128Mi
+      limits:
+        cpu: 250m
+        memory: 256Mi
+
